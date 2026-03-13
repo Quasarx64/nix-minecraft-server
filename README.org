@@ -93,6 +93,6 @@ DISCORD_WEBHOOK=...
 #+end_src
 
 And reference them in the same fashion as in =server.nix=.
-* TODO
+* \TODO
 - A way to configure where to back up worlds (either locally or remote).
 
