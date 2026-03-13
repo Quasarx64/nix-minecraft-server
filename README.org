@@ -1,4 +1,8 @@
-My personal nix configuration for hosting a fabric Minecraft server.
+My personal nix configuration for hosting a fabric Minecraft server. Features include:
+
+- An atomized, easy to expand configuration that is ready to deploy a fabric server.
+- Support for secrets with [[https://github.com/ryantm/agenix][agenix]].
+- Automatic world backups for any amount of servers (once every 12 hours).
 
 * Installation 
 
@@ -48,6 +52,8 @@ Go to =server.nix= and change the variables as needed. See [[https://github.com/
 * Adding Mods
 Add whatever mods and datapacks you want into =minecraft/mods/= and =minecraft/datapacks/= I recommend using [[https://modrinth.com/mod/datapack-injector][Datapack Injector]] or something similar to automatically place datapacks into worlds.
 * Updating
+You will need to update the flake in order to access new server modules released by =nix-minecraft=.
+
 Update flake inputs and rebuild with:
 #+begin_src bash
 cd /home/user/flake/directory

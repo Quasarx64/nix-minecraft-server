@@ -29,6 +29,7 @@
       modules = [
         ./configuration.nix
         ./server.nix
+        ./backup.nix
         nix-minecraft.nixosModules.minecraft-servers
         agenix.nixosModules.default
       ];
