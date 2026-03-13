@@ -1,2 +1,5 @@
-minecraft/*
-!minecraft/.gitkeep
+minecraft/datapacks/*
+!minecraft/datapacks/.gitkeep
+minecraft/mods/*
+!minecraft/mods/.gitkeep
+
