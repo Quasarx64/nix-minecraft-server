@@ -1,0 +1,84 @@
+My personal nix configuration for hosting a fabric Minecraft server.
+
+* Installation 
+
+Install NixOS through whatever means you prefer. Here are two ways:
+
+Easier: Install NixOS through the graphical installer (keep it as minimal as possible), include git as a package, clone the repository, and install the flake from there.
+
+Harder but Faster: Through a minimal installer, manually partition your drives, clone the repository, and install directly.
+
+
+Clone this repository with:
+
+#+begin_src bash
+git clone https://github.com/Quasarx64/nix-minecraft-server.git --depth=1
+#+end_src
+
+** Modifying the Configuration
+
+IMPORTANT:
+
+- Replace =hardware-configuration.nix= with your own copy, which should be in =/etc/nixos/=. The configuration will be unbootable if you rebuild with my hardware configuration. You will have to boot a previous generation to continue.
+- For remote access, supply your public key in =openssh.authorizedKeys.keys= in =configuration.nix=.
+- If you are planning on using ports different from the default, modify the allowed ports in =networking.firewall.allowedTCPPorts= and =networking.firewall.allowedUDPPorts= in =configuration.nix=:
+  
+#+begin_src nix
+networking.firewall.allowedTCPPorts = [22 25565 24454 25575 ]; # In order: ssh, minecraft, simpleVC, mcrcon
+networking.firewall.allowedUDPPorts = [ 24454 ];
+   #+end_src
+
+LESS IMPORTANT:
+
+- Change system details like =hostName= and =timeZone= in =configuration.nix=:
+  
+   #+begin_src nix
+networking.hostName = "myCoolName";
+time.timeZone = "America/New_York";
+   #+end_src
+
+- You can change the flake name in =flake.nix=:
+   #+begin_src nix
+#...
+nixosConfigurations.myCoolName = nixpkgs.lib.nixosSystem { # I think decker is a pretty cool name though.
+#...
+   #+end_src
+* Configuring a Server
+Go to =server.nix= and change the variables as needed. See [[https://github.com/Infinidoge/nix-minecraft][nix-minecraft]] for more details.
+* Adding Mods
+Add whatever mods and datapacks you want into =minecraft/mods/= and =minecraft/datapacks/= I recommend using [[https://modrinth.com/mod/datapack-injector][Datapack Injector]] or something similar to automatically place datapacks into worlds.
+* Creating a Rcon Password
+
+If you're not planning on publicly posting your configuration, you can set:
+#+begin_src nix
+servers.my_server.serverProperties = {
+  "rcon.password" = "mySecretPassword";
+};
+#+end_src
+
+In regular plain text. If you are, you can use =agenix= to save it securely:
+
+1. Find your server's SSH hostkey in =/etc/ssh/ssh_host_ed25519_key=.
+2. navigate to =secrets/secrets.nix=, and replace the SSH public keys at the top with the server's hostkey and whichever public keys you want to be able to decrypt the password.
+3. In the  same directory, run:
+   #+begin_src bash
+agenix -e rcon-password.age
+   #+end_src
+4. In the editor that appears, type:
+   #+begin_src bash
+RCON_PASSWORD=mySecretPassword
+   #+end_src
+
+Your rcon password should now work.
+
+This works by using =environmentFile= from =nix-minecraft= to substitute secrets into Minecraft servers. Note that this can work for any secret you may need. Just follow the same format in the age file:
+
+#+begin_src bash
+RCON_PASSWORD=...
+MYSQL_PASSWORD=...
+DISCORD_WEBHOOK=...
+#+end_src
+
+And reference them in the same fashion as in =server.nix=.
+
+
