@@ -85,6 +85,7 @@
     vim 
     wget
     mcrcon
+    rsync
     git
   ];
 
