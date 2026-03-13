@@ -2,7 +2,7 @@ My personal nix configuration for hosting a fabric Minecraft server. Features in
 
 - An atomized, easy to expand configuration that is ready to deploy a fabric server.
 - Support for secrets with [[https://github.com/ryantm/agenix][agenix]].
-- Automatic world backups for any amount of servers (once every 12 hours).
+- Automatic local world backups for any amount of servers (once every 12 hours).
 
 * Installation 
 
@@ -93,5 +93,6 @@ DISCORD_WEBHOOK=...
 #+end_src
 
 And reference them in the same fashion as in =server.nix=.
-
+* TODO
+- A way to configure where to back up worlds (either locally or remote).
 
